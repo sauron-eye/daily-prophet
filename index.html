@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Daily Prophet — Wizarding Britain's Newspaper of Record</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* ══ HOMEPAGE-ONLY STYLES ══ */
+
+/* BREAKING TICKER */
+.ticker-wrap {
+  background:var(--red-dark); overflow:hidden;
+  border-bottom:1px solid var(--gold);
+  height:30px; display:flex; align-items:center;
+}
+.ticker-label {
+  background:var(--gold); color:var(--green);
+  font-family:'DM Sans',sans-serif; font-size:.6rem;
+  letter-spacing:.2em; text-transform:uppercase;
+  padding:0 .8rem; height:100%; display:flex;
+  align-items:center; flex-shrink:0; font-weight:700;
+}
+.ticker-track {
+  display:flex; animation:ticker 40s linear infinite;
+  white-space:nowrap;
+}
+.ticker-track:hover { animation-play-state:paused; }
+.ticker-item {
+  font-family:'IM Fell English',serif;
+  font-size:.78rem; font-style:italic;
+  color:var(--parchment);
+  padding:0 2.5rem;
+}
+.ticker-item::before { content:'⚡'; margin-right:.5rem; }
+@keyframes ticker {
+  0% { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
+}
+
+/* MASTHEAD */
+.masthead {
+  background:var(--parchment-dark);
+  border-bottom:1px solid var(--border);
+  text-align:center; padding:2rem 1rem 1.2rem;
+  position:relative; overflow:hidden;
+  transition:background .35s;
+}
+.masthead::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 28px,
+    rgba(139,105,20,.06) 28px,rgba(139,105,20,.06) 29px
+  );
+  pointer-events:none;
+}
+.mast-topbar {
+  font-family:'DM Sans',sans-serif;
+  font-size:.55rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-faded);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  padding:.3rem 0; width:100%; margin-bottom:.7rem;
+  display:flex; justify-content:space-between;
+}
+.mast-topbar span { padding:0 1rem; }
+.mast-name {
+  font-family:'UnifrakturCook',cursive;
+  font-size:clamp(3.5rem,10vw,7rem);
+  line-height:.88; color:var(--green);
+  text-shadow:3px 3px 0 var(--parchment-deep), 1px 1px 0 var(--gold);
+  transition:color .35s;
+  position:relative;
+}
+[data-theme="dark"] .mast-name { color:var(--gold-bright); text-shadow:3px 3px 0 rgba(0,0,0,.5); }
+.mast-orn { color:var(--gold); font-size:1.1rem; margin:.6rem 0 .3rem; letter-spacing:.5rem; display:block; }
+.mast-sub { font-family:'IM Fell English',serif; font-size:1rem; font-style:italic; color:var(--ink-faded); letter-spacing:.08em; }
+.mast-rule { display:flex; align-items:center; gap:.8rem; justify-content:center; margin:.5rem auto; }
+.mast-rule hr { flex:1; max-width:150px; border:none; border-top:1px solid var(--border); }
+.mast-rule .dia { color:var(--gold); font-size:.6rem; letter-spacing:.3rem; }
+.mast-meta { font-family:'DM Sans',sans-serif; font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faded); }
+
+/* OWL DECORATIONS */
+.owl-deco {
+  position:absolute; font-size:2.5rem; opacity:.08;
+  animation:owlFloat 6s ease-in-out infinite;
+  pointer-events:none;
+}
+.owl-deco.left { left:3%; top:30%; animation-delay:0s; }
+.owl-deco.right { right:3%; top:20%; animation-delay:3s; }
+@keyframes owlFloat {
+  0%,100% { transform:translateY(0) rotate(-5deg); }
+  50% { transform:translateY(-15px) rotate(5deg); }
+}
+
+/* SECTION LABELS */
+.section-label {
+  display:flex; align-items:center; gap:1rem;
+  margin:2rem 0 1rem;
+  font-family:'Cinzel',serif; font-size:.75rem;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold);
+}
+.section-label::before, .section-label::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* MAIN GRID */
+.main-grid {
+  max-width:1280px; margin:0 auto; padding:0 1.5rem;
+  display:grid;
+  grid-template-columns:1fr 340px;
+  gap:2rem;
+}
+@media(max-width:900px) { .main-grid { grid-template-columns:1fr; } }
+
+/* LEAD STORY */
+.lead-story {
+  border-bottom:2px solid var(--border);
+  padding-bottom:1.8rem; margin-bottom:1.8rem;
+}
+.lead-kicker {
+  font-family:'DM Sans',sans-serif; font-size:.6rem;
+  letter-spacing:.22em; text-transform:uppercase;
+  color:var(--red); margin-bottom:.4rem;
+  display:flex; align-items:center; gap:.4rem;
+}
+.lead-kicker::before { content:''; width:18px; height:2px; background:var(--red); display:inline-block; }
+.lead-headline {
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700; line-height:1.1;
+  color:var(--ink); margin-bottom:.7rem;
+  transition:color .35s;
+}
+.lead-headline a { color:inherit; text-decoration:none; }
+.lead-headline a:hover { color:var(--green); text-decoration:underline; text-decoration-color:var(--gold); }
+[data-theme="dark"] .lead-headline a:hover { color:var(--gold-bright); }
+.lead-deck {
+  font-family:'IM Fell English',serif;
+  font-size:1.1rem; font-style:italic;
+  color:var(--ink-faded); line-height:1.5;
+  border-left:3px solid var(--gold); padding-left:.9rem;
+  margin-bottom:.9rem;
+}
+.lead-byline {
+  font-family:'DM Sans',sans-serif; font-size:.62rem;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faded);
+}
+.lead-byline strong { color:var(--ink); }
+.lead-excerpt {
+  font-family:'IM Fell English',serif;
+  font-size:1rem; line-height:1.78; color:var(--ink);
+  margin-top:.9rem; transition:color .35s;
+}
+.read-more {
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-family:'DM Sans',sans-serif; font-size:.62rem;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--green); text-decoration:none;
+  border-bottom:1px solid var(--gold); padding-bottom:.1rem;
+  margin-top:.8rem; transition:all .2s;
+}
+[data-theme="dark"] .read-more { color:var(--gold-bright); }
+.read-more:hover { color:var(--gold); border-color:var(--green); }
+
+/* SECONDARY STORIES GRID */
+.secondary-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1.5rem; margin-bottom:1.8rem;
+}
+@media(max-width:600px) { .secondary-grid { grid-template-columns:1fr; } }
+
+.story-card {
+  border-top:3px solid var(--border); padding-top:1rem;
+  transition:border-color .2s;
+}
+.story-card:hover { border-color:var(--green); }
+[data-theme="dark"] .story-card:hover { border-color:var(--gold-bright); }
+.story-kicker {
+  font-family:'DM Sans',sans-serif; font-size:.57rem;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold-dim);
+  margin-bottom:.3rem;
+}
+.story-card .story-kicker { color:var(--gold); }
+.story-headline {
+  font-family:'Cinzel',serif;
+  font-size:1.05rem; font-weight:700;
+  line-height:1.2; color:var(--ink); margin-bottom:.5rem; transition:color .35s;
+}
+.story-headline a { color:inherit; text-decoration:none; }
+.story-headline a:hover { color:var(--green); }
+[data-theme="dark"] .story-headline a:hover { color:var(--gold-bright); }
+.story-deck {
+  font-family:'IM Fell English',serif; font-size:.95rem;
+  font-style:italic; color:var(--ink-faded); line-height:1.5; margin-bottom:.5rem;
+}
+.story-byline { font-family:'DM Sans',sans-serif; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faded); }
+
+/* THIRDS ROW */
+.thirds-row {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:1.5rem; border-top:2px solid var(--border);
+  padding-top:1.5rem; margin-bottom:1.8rem;
+}
+@media(max-width:700px) { .thirds-row { grid-template-columns:1fr; } }
+
+/* SIDEBAR */
+.sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+
+.sidebar-widget {
+  background:var(--parchment-dark);
+  border:1px solid var(--border);
+  padding:1.2rem; transition:background .35s;
+}
+.widget-title {
+  font-family:'Cinzel',serif;
+  font-size:.7rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--green); margin-bottom:.8rem;
+  padding-bottom:.5rem; border-bottom:2px solid var(--gold);
+  transition:color .35s;
+}
+[data-theme="dark"] .widget-title { color:var(--gold-bright); }
+
+/* WEATHER WIDGET */
+.weather-grid { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+.weather-loc {
+  font-family:'Cinzel',serif; font-size:.72rem; font-weight:600;
+  color:var(--ink); transition:color .35s;
+}
+.weather-cond { font-family:'IM Fell English',serif; font-size:.82rem; font-style:italic; color:var(--ink-faded); }
+.weather-icon { font-size:1.4rem; }
+
+/* QUIDDITCH SCORES */
+.quid-match { border-bottom:1px dotted var(--border); padding:.4rem 0; }
+.quid-match:last-child { border:none; }
+.quid-teams { font-family:'Cinzel',serif; font-size:.75rem; font-weight:600; color:var(--ink); transition:color .35s; }
+.quid-score { font-family:'DM Sans',sans-serif; font-size:.65rem; letter-spacing:.08em; color:var(--gold); }
+
+/* MOST READ */
+.most-read-item {
+  display:flex; gap:.7rem; align-items:flex-start;
+  padding:.6rem 0; border-bottom:1px dotted var(--border);
+}
+.most-read-item:last-child { border:none; }
+.mr-num {
+  font-family:'Cinzel Decorative',serif; font-size:1.2rem;
+  font-weight:700; color:var(--parchment-aged); line-height:1;
+  flex-shrink:0; width:1.5rem; text-align:center;
+}
+.mr-hl {
+  font-family:'IM Fell English',serif; font-size:.9rem;
+  line-height:1.3; color:var(--ink); transition:color .35s;
+}
+.mr-hl a { color:inherit; text-decoration:none; }
+.mr-hl a:hover { color:var(--green); }
+[data-theme="dark"] .mr-hl a:hover { color:var(--gold-bright); }
+
+/* CLASSIFIEDS */
+.classif-item { padding:.5rem 0; border-bottom:1px dotted var(--border); }
+.classif-item:last-child { border:none; }
+.classif-cat { font-family:'DM Sans',sans-serif; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+.classif-text { font-family:'IM Fell English',serif; font-size:.85rem; font-style:italic; color:var(--ink-faded); line-height:1.4; }
+
+/* MINISTRY NOTICE */
+.ministry-notice {
+  background:var(--green); color:var(--parchment);
+  border:3px solid var(--gold); padding:1.2rem;
+  text-align:center; transition:background .35s;
+}
+.mn-title { font-family:'Cinzel Decorative',serif; font-size:.85rem; color:var(--gold-bright); letter-spacing:.1em; margin-bottom:.5rem; }
+.mn-body { font-family:'IM Fell English',serif; font-size:.85rem; font-style:italic; line-height:1.5; color:rgba(242,232,198,.8); }
+
+/* LARGE DIVIDER */
+.col-divider { border:none; border-top:2px double var(--border); margin:1.5rem 0; }
+
+/* BOTTOM FULL WIDTH */
+.bottom-section { max-width:1280px; margin:0 auto; padding:0 1.5rem 3rem; }
+
+/* HIGHLIGHT STORY (full width at bottom) */
+.highlight-story {
+  background:var(--green);
+  color:var(--parchment);
+  padding:2.5rem;
+  display:grid; grid-template-columns:2fr 1fr;
+  gap:2rem; margin-bottom:2rem;
+  transition:background .35s;
+}
+@media(max-width:700px) { .highlight-story { grid-template-columns:1fr; } }
+.hs-kicker { font-family:'DM Sans',sans-serif; font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem; }
+.hs-headline { font-family:'Cinzel Decorative',serif; font-size:clamp(1.4rem,3vw,2rem); font-weight:700; color:var(--gold-bright); line-height:1.15; margin-bottom:.7rem; }
+.hs-headline a { color:inherit; text-decoration:none; }
+.hs-headline a:hover { text-decoration:underline; text-decoration-color:var(--gold); }
+.hs-body { font-family:'IM Fell English',serif; font-size:1rem; font-style:italic; line-height:1.7; color:rgba(242,232,198,.85); }
+.hs-stats { display:flex; flex-direction:column; gap:.8rem; justify-content:center; }
+.hs-stat { text-align:center; border:1px solid rgba(196,150,42,.3); padding:.8rem; }
+.hs-sn { font-family:'Cinzel',serif; font-size:2rem; font-weight:700; color:var(--gold-bright); }
+.hs-sd { font-family:'DM Sans',sans-serif; font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(196,150,42,.7); margin-top:.2rem; }
+
+/* ARCHIVE GRID */
+.archive-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+@media(max-width:800px) { .archive-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:480px) { .archive-grid { grid-template-columns:1fr; } }
+.archive-card {
+  background:var(--parchment-dark); border:1px solid var(--border);
+  padding:1rem; transition:all .2s; border-radius:1px;
+}
+.archive-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px var(--shadow); }
+.ac-cat { font-family:'DM Sans',sans-serif; font-size:.55rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:.3rem; }
+.ac-hl { font-family:'Cinzel',serif; font-size:.92rem; font-weight:700; color:var(--ink); line-height:1.25; transition:color .35s; }
+.ac-hl a { color:inherit; text-decoration:none; }
+.ac-hl a:hover { color:var(--green); }
+[data-theme="dark"] .ac-hl a:hover { color:var(--gold-bright); }
+.ac-date { font-family:'DM Sans',sans-serif; font-size:.55rem; letter-spacing:.1em; color:var(--ink-faded); margin-top:.4rem; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<a class="btt" id="btt" href="#top">↑</a>
+
+<!-- BREAKING NEWS TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚡ Breaking</div>
+  <div style="overflow:hidden;flex:1">
+    <div class="ticker-track">
+      <span class="ticker-item">SIRIUS BLACK, CONVICTED MURDERER, ESCAPES FROM AZKABAN — First escape in the fortress's history</span>
+      <span class="ticker-item">MINISTRY ISSUES NATIONWIDE DEMENTOR ALERT — Citizens urged to remain indoors after dark</span>
+      <span class="ticker-item">HOGWARTS TO HOST TRIWIZARD TOURNAMENT — First time in over a century; Age Restriction to be enforced</span>
+      <span class="ticker-item">GRINGOTTS BREAK-IN: VAULT 713 TARGETED — Goblins insist nothing was taken</span>
+      <span class="ticker-item">HE-WHO-MUST-NOT-BE-NAMED: MINISTER FUDGE DISMISSES DUMBLEDORE'S CLAIMS AS "SCAREMONGERING"</span>
+      <span class="ticker-item">DOLORES UMBRIDGE APPOINTED HOGWARTS HIGH INQUISITOR — Ministry assumes oversight of magical education</span>
+      <span class="ticker-item">QUIDDITCH WORLD CUP: IRELAND VICTORIOUS — Krum's performance described as extraordinary despite defeat</span>
+      <span class="ticker-item">SIRIUS BLACK, CONVICTED MURDERER, ESCAPES FROM AZKABAN — First escape in the fortress's history</span>
+      <span class="ticker-item">MINISTRY ISSUES NATIONWIDE DEMENTOR ALERT — Citizens urged to remain indoors after dark</span>
+      <span class="ticker-item">HOGWARTS TO HOST TRIWIZARD TOURNAMENT — First time in over a century; Age Restriction to be enforced</span>
+      <span class="ticker-item">GRINGOTTS BREAK-IN: VAULT 713 TARGETED — Goblins insist nothing was taken</span>
+      <span class="ticker-item">HE-WHO-MUST-NOT-BE-NAMED: MINISTER FUDGE DISMISSES DUMBLEDORE'S CLAIMS AS "SCAREMONGERING"</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="site-nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">The Daily Prophet</a>
+    <ul class="nav-links">
+      <li><a href="#ministry">Ministry</a></li>
+      <li><a href="#hogwarts">Hogwarts</a></li>
+      <li><a href="#dark-arts">Dark Arts</a></li>
+      <li><a href="#quidditch">Quidditch</a></li>
+      <li><a href="#gringotts-sec">Gringotts</a></li>
+      <li><a href="#classifieds">Classifieds</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-date">Thursday, 2 August 1993</div>
+      <button class="theme-btn" id="themeBtn">
+        <span class="ti" id="ticon">🌙</span>
+        <span id="tlbl">Dark</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="owl-deco left">🦉</div>
+  <div class="owl-deco right">🦉</div>
+  <div class="mast-topbar">
+    <span>Est. 1743 · Diagon Alley, London</span>
+    <span>Price: 1 Knut — Delivery by Owl Post Included</span>
+    <span>Thursday, 2 August 1993 · Vol. CCXL</span>
+  </div>
+  <div class="mast-name">The Daily Prophet</div>
+  <div class="mast-orn">✦ ✦ ✦</div>
+  <div class="mast-sub">Wizarding Britain's Newspaper of Record Since 1743</div>
+  <div class="mast-rule"><hr/><span class="dia">⚡ ⚡ ⚡</span><hr/></div>
+  <div class="mast-meta">Serving the Wizarding Community of Great Britain, Ireland, and All Territories Under Ministry Jurisdiction</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-grid" style="margin-top:2rem">
+
+  <!-- LEFT: NEWS COLUMN -->
+  <main>
+
+    <!-- LEAD STORY -->
+    <div class="section-label" id="dark-arts">⚡ Top Story — Dark Arts</div>
+
+    <article class="lead-story reveal">
+      <div class="lead-kicker">Azkaban · Urgent Ministry Dispatch</div>
+      <h2 class="lead-headline">
+        <a href="sirius-black.html">He Has Gone. Mass Murderer Sirius Black Vanishes From Azkaban in History's First-Ever Escape</a>
+      </h2>
+      <div class="lead-deck">Black, convicted in 1981 of the murder of twelve Muggles and the betrayal of the Potter family to He-Who-Must-Not-Be-Named, has apparently evaded an entire garrison of Dementors. Minister Fudge travels personally to inspect the fortress.</div>
+      <div class="lead-byline">By <strong>Rita Skeeter</strong>, Senior Correspondent · Azkaban Fortress, North Sea</div>
+      <p class="lead-excerpt">The impenetrable walls of Azkaban — long considered the most secure institution in the wizarding world — have been breached. Sirius Black, described by Ministry officials as "the most dangerous dark wizard alive short of You-Know-Who himself," was discovered missing from his cell during the early hours of Sunday morning. The Dementors, ordinarily infallible in their guardianship, appear wholly bewildered. Minister Cornelius Fudge, visibly shaken upon his arrival at the fortress, was heard to say only that the matter was being "looked into with the utmost urgency."</p>
+      <a class="read-more" href="sirius-black.html">Read Full Report →</a>
+    </article>
+
+    <!-- SECONDARY STORIES -->
+    <div class="section-label" id="hogwarts">📜 Hogwarts &amp; Ministry Affairs</div>
+
+    <div class="secondary-grid reveal">
+      <article class="story-card">
+        <div class="story-kicker">Triwizard Tournament</div>
+        <h3 class="story-headline"><a href="triwizard.html">Hogwarts to Host Legendary Triwizard Tournament — First Time in 104 Years</a></h3>
+        <div class="story-deck">Dumbledore announces the grand return of the ancient three-school competition. Champions from Hogwarts, Beauxbatons, and Durmstrang to compete for eternal glory and the thousand-Galleon prize.</div>
+        <div class="story-byline">By <strong>Bartholomew Phelps</strong>, Education Correspondent</div>
+        <a class="read-more" href="triwizard.html">Read More →</a>
+      </article>
+
+      <article class="story-card">
+        <div class="story-kicker">Ministry Control · Hogwarts</div>
+        <h3 class="story-headline"><a href="umbridge.html">Dolores Umbridge Named Hogwarts High Inquisitor in Unprecedented Ministry Power Grab</a></h3>
+        <div class="story-deck">For the first time in Hogwarts' thousand-year history, the Ministry of Magic assumes direct oversight of staff appointments, curriculum, and discipline at the school.</div>
+        <div class="story-byline">By <strong>Patricia Stimpson</strong>, Ministry Correspondent</div>
+        <a class="read-more" href="umbridge.html">Read More →</a>
+      </article>
+    </div>
+
+    <hr class="col-divider"/>
+
+    <!-- GRINGOTTS SECTION -->
+    <div class="section-label" id="gringotts-sec">🏦 Gringotts &amp; Financial</div>
+
+    <div class="secondary-grid reveal">
+      <article class="story-card">
+        <div class="story-kicker">Security Breach · Exclusive</div>
+        <h3 class="story-headline"><a href="gringotts.html">Unprecedented Break-In at Gringotts — High-Security Vault 713 Targeted on Same Day as Harry Potter's Visit</a></h3>
+        <div class="story-deck">Goblin security chiefs confirm an attempted breach of one of the bank's most heavily guarded vaults. The culprit remains at large. A Hogwarts groundskeeper was seen at the bank hours before the incident.</div>
+        <div class="story-byline">By <strong>Imelda Grout</strong>, Financial Correspondent</div>
+        <a class="read-more" href="gringotts.html">Read More →</a>
+      </article>
+
+      <article class="story-card">
+        <div class="story-kicker">Dark Arts · Confirmed</div>
+        <h3 class="story-headline"><a href="voldemort-returns.html">He-Who-Must-Not-Be-Named Has Returned: The Truth the Ministry Refuses to Acknowledge</a></h3>
+        <div class="story-deck">Eyewitness testimony from the Triwizard Tournament's tragic final task, combined with Albus Dumbledore's sworn statements, paint an undeniable picture the Minister for Magic will not accept.</div>
+        <div class="story-byline">By <strong>Rita Skeeter</strong>, Senior Correspondent</div>
+        <a class="read-more" href="voldemort-returns.html">Read More →</a>
+      </article>
+    </div>
+
+    <hr class="col-divider"/>
+
+    <!-- THIRDS -->
+    <div class="section-label" id="ministry">🏛 Ministry Dispatches</div>
+    <div class="thirds-row reveal">
+      <article class="story-card">
+        <div class="story-kicker">Hogwarts · Exposed</div>
+        <h3 class="story-headline"><a href="dumbledores-army.html">Dumbledore's Army: The Secret Student Militia at Hogwarts Uncovered</a></h3>
+        <div class="story-deck">Thirty-odd Hogwarts students found operating an illegal Defence organisation under direct tuition of Harry Potter himself.</div>
+        <div class="story-byline">By <strong>D. Umbridge</strong>, Special Report</div>
+        <a class="read-more" href="dumbledores-army.html">Read More →</a>
+      </article>
+
+      <article class="story-card">
+        <div class="story-kicker">Ministry Policy</div>
+        <h3 class="story-headline">Dementor Deployment Authorised in Muggle Areas — First Time in Living Memory</h3>
+        <div class="story-deck">Emergency measures passed by the Wizengamot in response to Black's escape bring Dementors south of the Borders for the first time since 1982.</div>
+        <div class="story-byline">By <strong>P. Stimpson</strong>, Ministry Correspondent</div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-kicker">Letters to the Editor</div>
+        <h3 class="story-headline">Reader Outrage Over Potter Coverage — Fifty Owls Received in One Day</h3>
+        <div class="story-deck">Our decision to run the Skeeter profile of Harry Potter has prompted the largest postbag in this paper's 250-year history. A selection of letters on page 7.</div>
+        <div class="story-byline">By <strong>The Editors</strong></div>
+      </article>
+    </div>
+
+  </main>
+
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- MINISTRY NOTICE -->
+    <div class="ministry-notice sidebar-widget reveal">
+      <div class="mn-title">⚠ Official Ministry Notice</div>
+      <div class="mn-body">The Ministry of Magic wishes to advise all witches and wizards: Sirius Black is ARMED AND DANGEROUS. Do not approach. Contact the Auror Office immediately via Floo or owl. Citizens are reminded that performing magic to apprehend Black without Ministry sanction constitutes a Level 4 offence.</div>
+    </div>
+
+    <!-- WEATHER -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-title">🌦 Wizarding Weather</div>
+      <div class="weather-grid">
+        <div>
+          <div class="weather-icon">⛈</div>
+          <div class="weather-loc">Azkaban</div>
+          <div class="weather-cond">Perpetual Despair, Dementor Fog</div>
+        </div>
+        <div>
+          <div class="weather-icon">🌤</div>
+          <div class="weather-loc">Diagon Alley</div>
+          <div class="weather-cond">Partly Cloudy, Warm</div>
+        </div>
+        <div>
+          <div class="weather-icon">🌩</div>
+          <div class="weather-loc">Hogsmeade</div>
+          <div class="weather-cond">Heavy Rain, Dementor Activity</div>
+        </div>
+        <div>
+          <div class="weather-icon">☀</div>
+          <div class="weather-loc">Hogwarts</div>
+          <div class="weather-cond">Fair, Enchanted Ceiling Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIDDITCH SCORES -->
+    <div class="sidebar-widget reveal" id="quidditch">
+      <div class="widget-title">🏆 Quidditch League Scores</div>
+      <div class="quid-match">
+        <div class="quid-teams">Puddlemere United vs Ballycastle Bats</div>
+        <div class="quid-score">230 – 180 · Puddlemere Win</div>
+      </div>
+      <div class="quid-match">
+        <div class="quid-teams">Chudley Cannons vs Wimbourne Wasps</div>
+        <div class="quid-score">50 – 390 · Wasps Win (Season 11 Consecutive)</div>
+      </div>
+      <div class="quid-match">
+        <div class="quid-teams">Holyhead Harpies vs Tutshill Tornados</div>
+        <div class="quid-score">320 – 60 · Harpies Win</div>
+      </div>
+      <div class="quid-match">
+        <div class="quid-teams">Appleby Arrows vs Montrose Magpies</div>
+        <div class="quid-score">Postponed — Weather</div>
+      </div>
+    </div>
+
+    <!-- MOST READ -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-title">🔥 Most Read This Week</div>
+      <div class="most-read-item">
+        <div class="mr-num">1</div>
+        <div class="mr-hl"><a href="sirius-black.html">Sirius Black Escapes Azkaban in History's First Breakout</a></div>
+      </div>
+      <div class="most-read-item">
+        <div class="mr-num">2</div>
+        <div class="mr-hl"><a href="voldemort-returns.html">He-Who-Must-Not-Be-Named: The Return</a></div>
+      </div>
+      <div class="most-read-item">
+        <div class="mr-num">3</div>
+        <div class="mr-hl"><a href="gringotts.html">Gringotts Break-In: What Really Happened in Vault 713</a></div>
+      </div>
+      <div class="most-read-item">
+        <div class="mr-num">4</div>
+        <div class="mr-hl"><a href="triwizard.html">Triwizard Tournament: Everything We Know</a></div>
+      </div>
+      <div class="most-read-item">
+        <div class="mr-num">5</div>
+        <div class="mr-hl"><a href="dumbledores-army.html">Dumbledore's Secret Army at Hogwarts</a></div>
+      </div>
+    </div>
+
+    <!-- CLASSIFIEDS -->
+    <div class="sidebar-widget reveal" id="classifieds">
+      <div class="widget-title">📋 Classified Notices</div>
+      <div class="classif-item">
+        <div class="classif-cat">Pets &amp; Magical Creatures</div>
+        <div class="classif-text">Owl for sale — Screech Owl, excellent post record, eats only mice. Contact: Box 447, Daily Prophet.</div>
+      </div>
+      <div class="classif-item">
+        <div class="classif-cat">Positions Wanted</div>
+        <div class="classif-text">Experienced curse-breaker, five years Gringotts experience, seeks new opportunity. Discretion assured. Box 512.</div>
+      </div>
+      <div class="classif-item">
+        <div class="classif-cat">Property</div>
+        <div class="classif-text">12 Grimmauld Place. Ancestral wizard home, heritage-listed. Fidelius Charm available. Not for Muggles. Box 88.</div>
+      </div>
+      <div class="classif-item">
+        <div class="classif-cat">Lost &amp; Found</div>
+        <div class="classif-text">FOUND: One enchanted Mirror, speaks only in riddles, located off corridor near Hogwarts Trophy Room. Owner contact Argus Filch.</div>
+      </div>
+      <div class="classif-item">
+        <div class="classif-cat">Services</div>
+        <div class="classif-text">MADAM MALKIN'S ROBES FOR ALL OCCASIONS — New school year collection now available. Gryffindor, Slytherin, Hufflepuff, Ravenclaw linings. 9 Diagon Alley.</div>
+      </div>
+    </div>
+
+    <!-- GOLD EXCHANGE -->
+    <div class="sidebar-widget reveal">
+      <div class="widget-title">💰 Gringotts Exchange Rates</div>
+      <div style="font-family:'IM Fell English',serif;font-size:.9rem;line-height:2;color:var(--ink-faded)">
+        <div>1 Galleon = <strong style="color:var(--ink)">17 Sickles</strong></div>
+        <div>1 Sickle = <strong style="color:var(--ink)">29 Knuts</strong></div>
+        <div style="font-style:italic;font-size:.78rem;margin-top:.3rem;border-top:1px dotted var(--border);padding-top:.3rem">Muggle Equivalency: Subject to Ministry restriction. Unauthorised currency exchange is a Class C offence.</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FULL-WIDTH BOTTOM -->
+<div class="bottom-section">
+
+  <!-- HIGHLIGHT / FEATURED STORY -->
+  <div class="section-label">⚡ Special Report</div>
+  <div class="highlight-story reveal">
+    <div>
+      <div class="hs-kicker">Dark Arts · Investigation</div>
+      <h2 class="hs-headline"><a href="voldemort-returns.html">The Return of He-Who-Must-Not-Be-Named: An Exclusive Investigation</a></h2>
+      <p class="hs-body">Three eyewitnesses. One terrifying conclusion. Minister Fudge refuses to act. In our most comprehensive investigation to date, the Daily Prophet examines the mounting evidence that Voldemort — there, we have said it — has returned in a corporeal form, and that the Ministry of Magic is engaged in a deliberate, dangerous campaign of denial. The consequences of this silence could be catastrophic for the entire wizarding world.</p>
+      <a class="read-more" style="color:var(--gold-bright);border-color:var(--gold);" href="voldemort-returns.html">Read the Full Investigation →</a>
+    </div>
+    <div class="hs-stats">
+      <div class="hs-stat">
+        <div class="hs-sn">13</div>
+        <div class="hs-sd">Years Since Defeat at Godric's Hollow</div>
+      </div>
+      <div class="hs-stat">
+        <div class="hs-sn">3</div>
+        <div class="hs-sd">Confirmed Eyewitness Accounts</div>
+      </div>
+      <div class="hs-stat">
+        <div class="hs-sn">0</div>
+        <div class="hs-sd">Ministry Enquiries Launched</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL STORIES ARCHIVE -->
+  <div class="section-label">📰 Full Archive — All Reports</div>
+  <div class="archive-grid reveal">
+    <div class="archive-card">
+      <div class="ac-cat">Dark Arts · Breaking</div>
+      <div class="ac-hl"><a href="sirius-black.html">Mass Murderer Sirius Black Escapes Azkaban</a></div>
+      <div class="ac-date">2 August 1993 · Rita Skeeter</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Gringotts · Security</div>
+      <div class="ac-hl"><a href="gringotts.html">Break-In at Gringotts: Vault 713 Targeted</a></div>
+      <div class="ac-date">1 August 1991 · Imelda Grout</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Dark Arts · Investigation</div>
+      <div class="ac-hl"><a href="voldemort-returns.html">He-Who-Must-Not-Be-Named Has Returned</a></div>
+      <div class="ac-date">25 June 1995 · Rita Skeeter</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Hogwarts · Sport</div>
+      <div class="ac-hl"><a href="triwizard.html">Triwizard Tournament Returns After 104 Years</a></div>
+      <div class="ac-date">1 September 1994 · B. Phelps</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Ministry · Hogwarts</div>
+      <div class="ac-hl"><a href="umbridge.html">Umbridge Appointed High Inquisitor of Hogwarts</a></div>
+      <div class="ac-date">2 September 1995 · P. Stimpson</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Hogwarts · Exposed</div>
+      <div class="ac-hl"><a href="dumbledores-army.html">Dumbledore's Army: The Secret Student Militia</a></div>
+      <div class="ac-date">17 April 1996 · Special Report</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Coming Soon</div>
+      <div class="ac-hl" style="color:var(--ink-faded)">The Battle of Hogwarts — Final Confrontation Report</div>
+      <div class="ac-date">2 May 1998 · Full Coverage Pending</div>
+    </div>
+    <div class="archive-card">
+      <div class="ac-cat">Coming Soon</div>
+      <div class="ac-hl" style="color:var(--ink-faded)">The Quidditch World Cup: Ireland vs Bulgaria</div>
+      <div class="ac-date">25 August 1994 · Sports Desk</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span class="footer-logo">The Daily Prophet</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="sirius-black.html">Dark Arts</a>
+    <a href="gringotts.html">Gringotts</a>
+    <a href="triwizard.html">Hogwarts</a>
+    <a href="umbridge.html">Ministry</a>
+    <a href="dumbledores-army.html">Investigations</a>
+    <a href="voldemort-returns.html">Special Reports</a>
+  </div>
+  <p>Wizarding Britain's Newspaper of Record · Established 1743 · Diagon Alley, London</p>
+  <p>All articles are works of original fan fiction. Harry Potter characters and the wizarding world are the intellectual property of J.K. Rowling and associated rights holders. This is an unofficial, non-commercial fan tribute.</p>
+  <p style="margin-top:.5rem">Printed by Owl-Press Ltd. on Everlasting Parchment · Do Not Attempt to Burn or Jinx</p>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const st=document.documentElement.scrollTop;
+  const sh=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  document.getElementById('progress-bar').style.width=(st/sh*100)+'%';
+  const b=document.getElementById('btt');
+  st>400?b.classList.add('vis'):b.classList.remove('vis');
+});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const btn=document.getElementById('themeBtn');
+const icon=document.getElementById('ticon');
+const lbl=document.getElementById('tlbl');
+let dark=localStorage.getItem('dp-theme')==='dark';
+function applyTheme(){document.documentElement.setAttribute('data-theme',dark?'dark':'light');icon.textContent=dark?'☀️':'🌙';lbl.textContent=dark?'Light':'Dark';}
+applyTheme();
+btn.addEventListener('click',()=>{dark=!dark;localStorage.setItem('dp-theme',dark?'dark':'light');applyTheme();});
+</script>
+</body>
+</html>
